@@ -31,6 +31,7 @@ public class HttpServerListener {
                 t.start();
             } catch (IOException e) {
                 System.out.println("ZOMG SERVER WENT SPLODE");
+                e.printStackTrace();
             }
         }
     }
@@ -44,7 +45,7 @@ public class HttpServerListener {
         try {
             server.start();
         } catch (IOException e) {
-
+            System.out.println("Error starting server.");
             e.printStackTrace();
         }
     }

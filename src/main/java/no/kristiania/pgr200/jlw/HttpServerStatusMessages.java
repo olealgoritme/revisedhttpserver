@@ -49,7 +49,7 @@ public class HttpServerStatusMessages {
         statusMessages.put(505, "HTTP Version Not Supported");
     }
 
-    public String getStatusMessage(int statusCode){
+    public static String getStatusMessage(int statusCode){
         return statusMessages.get(statusCode);
     }
 }

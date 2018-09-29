@@ -5,9 +5,6 @@ import java.io.InputStream;
 
 public class HttpServerParserGET extends HttpServerParser{
 
-    private InputStream input;
-    private HttpServerRequest request;
-
     public HttpServerParserGET(InputStream input, HttpServerRequest request){
         this.input = input;
         this.request = request;

@@ -26,31 +26,50 @@ public class HttpServerRequestHandler extends Thread {
         //create factory to create parser
         HttpServerParserFactory parserFactory = new HttpServerParserFactory(input);
         //create parser
-        HttpServerParser parser = parserFactory.createParser(parserFactory.getRequestType());
         try {
-            parser.parse();
-        } catch (IOException e) {
-            e.printStackTrace();
+            HttpServerParser parser = parserFactory.createParser(parserFactory.getRequestType());
+            try {
+                parser.parse();
+            } catch (IOException e) {
+                System.out.println("Error parsing request.");
+                e.printStackTrace();
+            }
+        } catch(IllegalArgumentException iae){
+            System.out.println("Error creating parser.");
+            iae.printStackTrace();
+        }
+        //instantiate the builder factory
+        HttpServerResponseBuilderFactory builderFactory = new HttpServerResponseBuilderFactory(response);
+        //create the builder, which populates the response object
+        try{
+            builderFactory.createBuilder(request.getPath());
+        } catch(IOException ioe){
+            System.out.println("Error creating builder.");
+            ioe.printStackTrace();
         }
 
-        //TO DO
-        //instantiate the builder factory
-        //create the builder, which populates the response object
 
         //instantiate writer object
-        HttpServerWriter writer = new HttpServerWriter(output, clientSocket);
+        HttpServerWriter writer = new HttpServerWriter(output, response);
         //write the response to the socket
-        writer.write();
+        try {
+            writer.write();
+        } catch(IOException ioe){
+            System.out.println("Error writing response to socket.");
+            ioe.printStackTrace();
+        }
 
 
         try {
             output.flush();
         } catch (IOException e) {
+            System.out.println("Error flushing output stream.");
             e.printStackTrace();
         }
         try {
             clientSocket.close();
         } catch (IOException e) {
+            System.out.println("Error closing socket.");
             e.printStackTrace();
         }
 

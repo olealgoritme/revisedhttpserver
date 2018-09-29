@@ -3,7 +3,7 @@ package no.kristiania.pgr200.jlw;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class HttpServerParserFactory {
+public class HttpServerParserFactory implements HttpServerParserFactoryInterface{
 
     public InputStream input;
     public HttpServerRequest request;

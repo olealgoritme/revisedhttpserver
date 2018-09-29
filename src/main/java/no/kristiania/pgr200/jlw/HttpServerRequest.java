@@ -61,6 +61,10 @@ public class HttpServerRequest {
         this.body = body;
     }
 
+    public HashMap<String, String> getAllParameters(){
+        return parameters;
+    }
+
     public String getParameter(String param){
         return parameters.get(param);
     }
