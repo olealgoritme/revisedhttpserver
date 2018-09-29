@@ -12,17 +12,22 @@ public class HttpServerRequestHandler extends Thread {
     private InputStream input;
     private OutputStream output;
 
-    public HttpServerRequestHandler(Socket clientSocket, InputStream input, OutputStream output) {
+    public HttpServerRequestHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
-        this.input = input;
-        this.output = output;
+        try {
+            input = clientSocket.getInputStream();
+            output = clientSocket.getOutputStream();
+        } catch (IOException e) {
+            System.out.println("Error opening input and output streams.");
+            e.printStackTrace();
+        }
     }
 
     public void start(){
         //Create object to hold final response
         HttpServerResponse response = new HttpServerResponse();
         //create object to hold the request
-        HttpServerRequest request = new HttpServerRequest(input);
+        HttpServerRequest request = new HttpServerRequest();
         //create factory to create parser
         HttpServerParserFactory parserFactory = new HttpServerParserFactory(input);
         //create parser
@@ -59,7 +64,6 @@ public class HttpServerRequestHandler extends Thread {
             System.out.println("Error writing response to socket.");
             ioe.printStackTrace();
         }
-
 
         try {
             output.flush();

@@ -10,12 +10,26 @@ public abstract class HttpServerParser {
     public InputStream input;
     public HttpServerRequest request;
 
+    public HttpServerParser(InputStream input, HttpServerRequest request){
+        this.input = input;
+        this.request = request;
+    }
+
     public void parseRequestLine() throws IOException{
-            String requestLine[] = readNextLine(input).split(" ");
-            request.setHttpMethod(requestLine[0]);
-            request.setHttpVersion(requestLine[2]);
-            request.setURL(requestLine[1]);
-            parseParameters(parsePath());
+            try {
+                String requestLine[] = readNextLine(input).split(" ");
+                for(String line: requestLine){
+                    System.out.println(line);
+                }
+                request.setHttpMethod(requestLine[0]);
+                request.setHttpVersion(requestLine[2]);
+                request.setURL(requestLine[1]);
+                parseParameters(parsePath());
+            } catch(IndexOutOfBoundsException e){
+                System.out.println("Index out of bounds on parseRequestLine in HttpServerParser.");
+            } catch(NullPointerException e){
+                System.out.println("Null pointer exception on parseRequestLine in HttpServerParser.");
+            }
     }
 
     public String parsePath() {

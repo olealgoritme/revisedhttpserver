@@ -9,9 +9,9 @@ public class HttpServerRequest {
     private String HttpMethod, HttpVersion, URL, body, path;
     private HashMap<String, String> headers, parameters;
 
-    public HttpServerRequest(InputStream input){
+    /*public HttpServerRequest(InputStream input){
         this.input = input;
-    }
+    }*/
 
     public String getHttpMethod() {
         return HttpMethod;

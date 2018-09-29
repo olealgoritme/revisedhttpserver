@@ -16,7 +16,7 @@ public class HttpServerListener {
     }
 
     public void start() throws IOException {
-        ServerSocket serverSocket = new ServerSocket(9000);
+        ServerSocket serverSocket = new ServerSocket(0);
         this.actualPort = serverSocket.getLocalPort();
         new Thread(() ->  serverThread(serverSocket)).start();
     }
@@ -25,9 +25,7 @@ public class HttpServerListener {
         while (true) {
             try {
                 Socket clientSocket = serverSocket.accept();
-                InputStream input = clientSocket.getInputStream();
-                OutputStream output = clientSocket.getOutputStream();
-                Thread t = new HttpServerRequestHandler(clientSocket, input, output);
+                Thread t = new HttpServerRequestHandler(clientSocket);
                 t.start();
             } catch (IOException e) {
                 System.out.println("ZOMG SERVER WENT SPLODE");
@@ -41,7 +39,7 @@ public class HttpServerListener {
     }
 
     public static void main(String[] args) {
-        HttpServerListener server = new HttpServerListener(9000);
+        HttpServerListener server = new HttpServerListener(0);
         try {
             server.start();
         } catch (IOException e) {

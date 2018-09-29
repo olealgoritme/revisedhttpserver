@@ -9,7 +9,6 @@ public class HttpServerResponseBuilderEcho extends HttpServerResponseBuilder{
     public HttpServerResponseBuilderEcho(HttpServerRequest request, HttpServerResponse response){
         this.request = request;
         this.response = response;
-
     }
 
     @Override
