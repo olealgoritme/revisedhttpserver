@@ -8,6 +8,8 @@ public abstract class HttpServerResponseBuilder {
         response.setStatusLine(request.getHttpVersion() + " " + statusCode + " " + HttpServerStatusMessages.getStatusMessage(statusCode));
     }
 
+    abstract void createResponse();
+
     abstract void setHeaderLines();
 
     abstract void setBody();

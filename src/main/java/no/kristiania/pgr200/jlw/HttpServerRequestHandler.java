@@ -42,7 +42,8 @@ public class HttpServerRequestHandler extends Thread {
         HttpServerResponseBuilderFactory builderFactory = new HttpServerResponseBuilderFactory(response);
         //create the builder, which populates the response object
         try{
-            builderFactory.createBuilder(request.getPath());
+            HttpServerResponseBuilder builder = builderFactory.createBuilder(request.getPath());
+            builder.createResponse();
         } catch(IOException ioe){
             System.out.println("Error creating builder.");
             ioe.printStackTrace();

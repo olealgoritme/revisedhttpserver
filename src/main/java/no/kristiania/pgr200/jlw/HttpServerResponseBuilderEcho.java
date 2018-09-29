@@ -9,6 +9,11 @@ public class HttpServerResponseBuilderEcho extends HttpServerResponseBuilder{
     public HttpServerResponseBuilderEcho(HttpServerRequest request, HttpServerResponse response){
         this.request = request;
         this.response = response;
+
+    }
+
+    @Override
+    public void createResponse(){
         if(request.getParameter("status") != null) {
             this.setStatusLine(Integer.parseInt((request.getParameter("status"))));
         } else{
