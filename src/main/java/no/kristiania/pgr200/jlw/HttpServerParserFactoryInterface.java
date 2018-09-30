@@ -5,5 +5,5 @@ public interface HttpServerParserFactoryInterface {
 
     HttpServerParser createParser(String requestType);
 
-    String getRequestType();
+    String getHttpRequestMethodType();
 }

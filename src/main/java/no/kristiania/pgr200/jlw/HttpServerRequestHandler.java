@@ -3,7 +3,6 @@ package no.kristiania.pgr200.jlw;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Writer;
 import java.net.Socket;
 
 public class HttpServerRequestHandler extends Thread {
@@ -32,7 +31,7 @@ public class HttpServerRequestHandler extends Thread {
         HttpServerParserFactory parserFactory = new HttpServerParserFactory(request);
         //create parser
         try {
-            HttpServerParser parser = parserFactory.createParser(parserFactory.getRequestType());
+            HttpServerParser parser = parserFactory.createParser(parserFactory.getHttpRequestMethodType());
             try {
                 parser.parse();
             } catch (IOException e) {
@@ -47,7 +46,7 @@ public class HttpServerRequestHandler extends Thread {
         HttpServerResponseBuilderFactory builderFactory = new HttpServerResponseBuilderFactory(request, response);
         //create the builder, which populates the response object
         try{
-            HttpServerResponseBuilder builder = builderFactory.createBuilder(request.getPath());
+            HttpServerResponseBuilder builder = builderFactory.createBuilder();
             builder.createResponse();
         } catch(IOException ioe){
             System.out.println("Error creating builder.");

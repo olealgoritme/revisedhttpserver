@@ -12,8 +12,8 @@ public class HttpServerResponseBuilderFactory implements HttpServerResponseBuild
         this.response = response;
     }
 
-    public HttpServerResponseBuilder createBuilder(String path) throws IOException {
-        switch(path){
+    public HttpServerResponseBuilder createBuilder() throws IOException {
+        switch(request.getPath()){
             case "echo":
                 return new HttpServerResponseBuilderEcho(request, response);
             default:

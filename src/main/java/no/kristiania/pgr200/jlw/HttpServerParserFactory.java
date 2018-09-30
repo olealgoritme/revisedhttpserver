@@ -1,36 +1,32 @@
 package no.kristiania.pgr200.jlw;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-
 public class HttpServerParserFactory implements HttpServerParserFactoryInterface{
 
     public HttpServerRequest request;
-    public String requestType;
+    public String httpRequestMethodType;
 
     public HttpServerParserFactory(HttpServerRequest request){
         this.request = request;
         int delimiterPos = request.getRequestBody().get(0).indexOf(" ");
         try{
-            requestType = request.getRequestBody().get(0).substring(0, delimiterPos);
+            httpRequestMethodType = request.getRequestBody().get(0).substring(0, delimiterPos);
         } catch(IndexOutOfBoundsException e){
             System.out.println("Error retrieving request type.");
         }
     }
 
-    public HttpServerParser createParser(String requestType) {
-        switch(requestType){
+    public HttpServerParser createParser(String httpRequestMethodType) {
+        switch(httpRequestMethodType){
             case "GET":
                 return new HttpServerParserGET(request);
             case "POST":
-                return new HttpServerParserGET(request);
+                return new HttpServerParserPOST(request);
             default:
                 throw new IllegalArgumentException("Invalid HTTP method");
        }
     }
 
-    public String getRequestType(){
-        return requestType;
+    public String getHttpRequestMethodType(){
+        return httpRequestMethodType;
     }
 }

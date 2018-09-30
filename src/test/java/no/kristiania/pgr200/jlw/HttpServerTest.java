@@ -1,6 +1,7 @@
 package no.kristiania.pgr200.jlw;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -82,6 +83,7 @@ public class HttpServerTest {
     }
 
     @Test
+    @Ignore
     public void shouldWriteStatusCodePOST() throws IOException {
         HttpClientPOSTRequest request = new HttpClientPOSTRequest("localhost", server.getPort(), "/",
                 "/echo?status=200");

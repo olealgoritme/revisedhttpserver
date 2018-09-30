@@ -28,19 +28,25 @@ public abstract class HttpServerParser {
     }
 
     public String parsePath() {
-        String URL[] = request.getURL().split("[?]");
-        request.setPath(URL[0]);
-        return URL[1];
+        String uri[] = request.getURL().split("[?]");
+        request.setPath(uri[0]);
+        if(uri.length > 1) {
+            return uri[1];
+        } else{
+            return "";
+        }
     }
 
     public void parseParameters(String paramString) {
-        String queryParams[] = paramString.split("&");
-        for (String param : queryParams) {
-            int delimiterPos = param.indexOf("=");
-            try {
-                request.setParameter(param.substring(0, delimiterPos), URLDecoder.decode(param.substring(delimiterPos + 1), "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                System.out.println("Error parsing parameters");
+        if(!paramString.isEmpty()) {
+            String queryParams[] = paramString.split("&");
+            for (String param : queryParams) {
+                int delimiterPos = param.indexOf("=");
+                try {
+                    request.setParameter(param.substring(0, delimiterPos), URLDecoder.decode(param.substring(delimiterPos + 1), "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    System.out.println("Error parsing parameters");
+                }
             }
         }
     }

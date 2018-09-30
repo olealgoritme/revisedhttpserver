@@ -4,5 +4,5 @@ import java.io.IOException;
 
 public interface HttpServerResponseBuilderFactoryInterface {
 
-    HttpServerResponseBuilder createBuilder(String path) throws IOException;
+    HttpServerResponseBuilder createBuilder() throws IOException;
 }
