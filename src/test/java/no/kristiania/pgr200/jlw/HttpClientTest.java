@@ -10,7 +10,7 @@ public class HttpClientTest {
 
     @Test
     public void shouldReadStatusCode() throws IOException {
-        HttpClientRequest request = new HttpClientRequest("urlecho.appspot.com", 80, "/echo?status=200");
+        HttpClientGETRequest request = new HttpClientGETRequest("urlecho.appspot.com", 80, "/echo?status=200");
         HttpClientResponse response = request.execute();
 
         assertThat(response.getStatusCode()).isEqualTo(200);
@@ -18,7 +18,7 @@ public class HttpClientTest {
 
     @Test
     public void shouldReadOtherStatusCodes() throws IOException {
-        HttpClientRequest request = new HttpClientRequest("urlecho.appspot.com", 80, "/echo?status=404");
+        HttpClientGETRequest request = new HttpClientGETRequest("urlecho.appspot.com", 80, "/echo?status=404");
         HttpClientResponse response = request.execute();
 
         assertThat(response.getStatusCode()).isEqualTo(404);
@@ -26,7 +26,7 @@ public class HttpClientTest {
 
     @Test
     public void shouldReadResponseHeaders() throws IOException {
-        HttpClientRequest request = new HttpClientRequest("urlecho.appspot.com",
+        HttpClientGETRequest request = new HttpClientGETRequest("urlecho.appspot.com",
                 80, "/echo?status=307&Location=http%3A%2F%2Fwww.google.com");
         HttpClientResponse response = request.execute();
 
@@ -36,7 +36,7 @@ public class HttpClientTest {
 
     @Test
     public void shouldReadResponseBody() throws IOException {
-        HttpClientRequest request = new HttpClientRequest("urlecho.appspot.com",
+        HttpClientGETRequest request = new HttpClientGETRequest("urlecho.appspot.com",
                 80, "/echo?body=Hello+world!");
         HttpClientResponse response = request.execute();
 

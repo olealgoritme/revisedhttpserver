@@ -1,7 +1,6 @@
 package no.kristiania.pgr200.jlw;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,7 +18,7 @@ public class HttpServerTest {
 
     @Test
     public void shouldWriteStatusCode() throws IOException {
-        HttpClientRequest request = new HttpClientRequest("localhost", server.getPort(), "/echo?status=200");
+        HttpClientGETRequest request = new HttpClientGETRequest("localhost", server.getPort(), "/echo?status=200");
         HttpClientResponse response = request.execute();
 
         assertThat(response.getStatusCode()).isEqualTo(200);
@@ -27,14 +26,14 @@ public class HttpServerTest {
 
     @Test
     public void shouldReadOtherStatusCodes() throws IOException {
-        HttpClientRequest request = new HttpClientRequest("localhost", server.getPort(), "/echo?status=404");
+        HttpClientGETRequest request = new HttpClientGETRequest("localhost", server.getPort(), "/echo?status=404");
         HttpClientResponse response = request.execute();
         assertThat(response.getStatusCode()).isEqualTo(404);
     }
 
     @Test
     public void shouldReadResponseHeaders() throws IOException {
-        HttpClientRequest request = new HttpClientRequest("localhost", server.getPort(),
+        HttpClientGETRequest request = new HttpClientGETRequest("localhost", server.getPort(),
                 "/echo?status=307&Location=http%3A%2F%2Fwww.kristiania.no");
         HttpClientResponse response = request.execute();
 
@@ -44,7 +43,7 @@ public class HttpServerTest {
 
     @Test
     public void shouldReadResponseBody() throws IOException {
-        HttpClientRequest request = new HttpClientRequest("localhost", server.getPort(),
+        HttpClientGETRequest request = new HttpClientGETRequest("localhost", server.getPort(),
                 "/echo?body=Hello+world!");
         HttpClientResponse response = request.execute();
 
@@ -54,7 +53,7 @@ public class HttpServerTest {
 
     @Test
     public void shouldEchoResponseBody() throws IOException {
-        HttpClientRequest request = new HttpClientRequest("localhost", server.getPort(),
+        HttpClientGETRequest request = new HttpClientGETRequest("localhost", server.getPort(),
                 "/echo?body=Hello+Kristiania!");
         HttpClientResponse response = request.execute();
 
@@ -64,7 +63,7 @@ public class HttpServerTest {
 
     @Test
     public void shouldHandleEmptyParam() throws IOException {
-        HttpClientRequest request = new HttpClientRequest("localhost", server.getPort(),
+        HttpClientGETRequest request = new HttpClientGETRequest("localhost", server.getPort(),
                 "/echo?");
         HttpClientResponse response = request.execute();
 
@@ -74,12 +73,20 @@ public class HttpServerTest {
 
     @Test
     public void shouldHandleNoParams() throws IOException {
-        HttpClientRequest request = new HttpClientRequest("localhost", server.getPort(),
+        HttpClientGETRequest request = new HttpClientGETRequest("localhost", server.getPort(),
                 "/echo");
         HttpClientResponse response = request.execute();
 
         assertThat(response.getStatusCode()).isEqualTo(200);
         assertThat(response.getBody()).isEqualTo("");
+    }
+
+    @Test
+    public void shouldWriteStatusCodePOST() throws IOException {
+        HttpClientPOSTRequest request = new HttpClientPOSTRequest("localhost", server.getPort(), "/",
+                "/echo?status=200");
+        HttpClientResponse response = request.execute();
+        assertThat(response.getStatusCode()).isEqualTo(200);
     }
 
     public static void main(String[] args) throws IOException {

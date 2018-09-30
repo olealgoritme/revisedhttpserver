@@ -23,6 +23,8 @@ public class HttpServerParserFactory implements HttpServerParserFactoryInterface
         switch(requestType){
             case "GET":
                 return new HttpServerParserGET(request);
+            case "POST":
+                return new HttpServerParserGET(request);
             default:
                 throw new IllegalArgumentException("Invalid HTTP method");
        }
