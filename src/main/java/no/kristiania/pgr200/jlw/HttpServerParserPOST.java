@@ -19,6 +19,7 @@ public class HttpServerParserPOST extends HttpServerParser {
             parseHeaderLines(line);
         }
         request.setBody(body.toString());
+        System.out.println("Request body: " + request.getBody());
     }
 
     @Override

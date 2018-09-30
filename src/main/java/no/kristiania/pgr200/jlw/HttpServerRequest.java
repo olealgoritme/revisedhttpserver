@@ -97,17 +97,20 @@ public class HttpServerRequest {
         parameters.put(param, value);
     }
 
-    public static String readNextLine(InputStream input) throws IOException {
-        StringBuilder nextLine = new StringBuilder();
+    private String readNextLine(InputStream input) throws IOException {
+        StringBuilder currentLine = new StringBuilder();
         int c;
         while ((c = input.read()) != -1) {
             if (c == '\r') {
                 input.mark(1);
-                input.read();
+                c = input.read();
+                if (c != '\n') {
+                    input.reset();
+                }
                 break;
             }
-            nextLine.append((char) c);
+            currentLine.append((char)c);
         }
-        return nextLine.toString();
+        return currentLine.toString();
     }
 }
