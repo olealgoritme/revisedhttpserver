@@ -1,7 +1,5 @@
 package no.kristiania.pgr200.jlw;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
-
 import java.io.IOException;
 
 public class HttpServerResponseBuilderFactory implements HttpServerResponseBuilderFactoryInterface{
@@ -9,7 +7,7 @@ public class HttpServerResponseBuilderFactory implements HttpServerResponseBuild
     private HttpServerRequest request;
     private HttpServerResponse response;
 
-    public HttpServerResponseBuilderFactory(HttpServerResponse response){
+    public HttpServerResponseBuilderFactory(HttpServerRequest request, HttpServerResponse response){
         this.request = request;
         this.response = response;
     }
@@ -17,6 +15,7 @@ public class HttpServerResponseBuilderFactory implements HttpServerResponseBuild
     public HttpServerResponseBuilder createBuilder(String path) throws IOException {
         switch(path){
             case "echo":
+                System.out.println("Creating new Response Builder!");
                 return new HttpServerResponseBuilderEcho(request, response);
             default:
                 return new HttpServerResponseBuilderURL();

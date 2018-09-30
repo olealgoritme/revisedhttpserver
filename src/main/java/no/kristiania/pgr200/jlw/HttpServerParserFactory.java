@@ -2,24 +2,18 @@ package no.kristiania.pgr200.jlw;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 public class HttpServerParserFactory implements HttpServerParserFactoryInterface{
 
-    public InputStream input;
     public HttpServerRequest request;
-    public String requestType, firstLine;
+    public String requestType;
 
-    public HttpServerParserFactory(InputStream input){
-        this.input = input;
+    public HttpServerParserFactory(HttpServerRequest request){
         this.request = request;
-        try {
-            firstLine = readNextLine(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        int delimiterPos = firstLine.indexOf(" ");
+        int delimiterPos = request.getRequestBody().get(0).indexOf(" ");
         try{
-            requestType = firstLine.substring(0, delimiterPos);
+            requestType = request.getRequestBody().get(0).substring(0, delimiterPos);
         } catch(IndexOutOfBoundsException e){
             System.out.println("Error retrieving request type.");
         }
@@ -28,7 +22,7 @@ public class HttpServerParserFactory implements HttpServerParserFactoryInterface
     public HttpServerParser createParser(String requestType) {
         switch(requestType){
             case "GET":
-                return new HttpServerParserGET(input, request);
+                return new HttpServerParserGET(request);
             default:
                 throw new IllegalArgumentException("Invalid HTTP method");
        }
@@ -36,18 +30,5 @@ public class HttpServerParserFactory implements HttpServerParserFactoryInterface
 
     public String getRequestType(){
         return requestType;
-    }
-
-    public static String readNextLine(InputStream input) throws IOException {
-        StringBuilder nextLine = new StringBuilder();
-        int c;
-        while ((c = input.read()) != -1) {
-            if (c == '\r') {
-                input.read();
-                break;
-            }
-            nextLine.append((char) c);
-        }
-        return nextLine.toString();
     }
 }

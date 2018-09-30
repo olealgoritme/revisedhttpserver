@@ -10,6 +10,10 @@ public class HttpServerResponse {
     private List<String> headers;
     private String body;
 
+    public HttpServerResponse(){
+        headers = new ArrayList<>();
+    }
+
     public String getStatusLine() {
         return statusLine;
     }

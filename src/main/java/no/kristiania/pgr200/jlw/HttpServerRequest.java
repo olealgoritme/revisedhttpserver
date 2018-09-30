@@ -1,17 +1,41 @@
 package no.kristiania.pgr200.jlw;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class HttpServerRequest {
 
     private InputStream input;
     private String HttpMethod, HttpVersion, URL, body, path;
     private HashMap<String, String> headers, parameters;
+    private List<String> requestBody;
 
-    /*public HttpServerRequest(InputStream input){
+    public HttpServerRequest(InputStream input) {
         this.input = input;
-    }*/
+        requestBody = new ArrayList<>();
+        headers = new HashMap<>();
+        parameters = new HashMap<>();
+        populateRequestBody(input);
+    }
+
+    private void populateRequestBody(InputStream input) {
+        try {
+            String line = readNextLine(input);
+            while (!line.isEmpty()) {
+                requestBody.add(line);
+                line = readNextLine(input);
+            }
+        } catch(IOException ioe){
+            System.out.println("Error reading input stream.");
+        }
+    }
+
+    public List<String> getRequestBody(){
+        return requestBody;
+    }
 
     public String getHttpMethod() {
         return HttpMethod;
@@ -71,5 +95,19 @@ public class HttpServerRequest {
 
     public void setParameter(String param, String value){
         parameters.put(param, value);
+    }
+
+    public static String readNextLine(InputStream input) throws IOException {
+        StringBuilder nextLine = new StringBuilder();
+        int c;
+        while ((c = input.read()) != -1) {
+            if (c == '\r') {
+                input.mark(1);
+                input.read();
+                break;
+            }
+            nextLine.append((char) c);
+        }
+        return nextLine.toString();
     }
 }

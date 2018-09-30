@@ -27,9 +27,9 @@ public class HttpServerRequestHandler extends Thread {
         //Create object to hold final response
         HttpServerResponse response = new HttpServerResponse();
         //create object to hold the request
-        HttpServerRequest request = new HttpServerRequest();
+        HttpServerRequest request = new HttpServerRequest(input);
         //create factory to create parser
-        HttpServerParserFactory parserFactory = new HttpServerParserFactory(input);
+        HttpServerParserFactory parserFactory = new HttpServerParserFactory(request);
         //create parser
         try {
             HttpServerParser parser = parserFactory.createParser(parserFactory.getRequestType());
@@ -44,7 +44,7 @@ public class HttpServerRequestHandler extends Thread {
             iae.printStackTrace();
         }
         //instantiate the builder factory
-        HttpServerResponseBuilderFactory builderFactory = new HttpServerResponseBuilderFactory(response);
+        HttpServerResponseBuilderFactory builderFactory = new HttpServerResponseBuilderFactory(request, response);
         //create the builder, which populates the response object
         try{
             HttpServerResponseBuilder builder = builderFactory.createBuilder(request.getPath());

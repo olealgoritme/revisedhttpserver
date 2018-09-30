@@ -1,6 +1,7 @@
 package no.kristiania.pgr200.jlw;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -72,7 +73,7 @@ public class HttpServerTest {
     }
 
     @Test
-    public void shouldHandleNullParam() throws IOException {
+    public void shouldHandleNoParams() throws IOException {
         HttpClientRequest request = new HttpClientRequest("localhost", server.getPort(),
                 "/echo");
         HttpClientResponse response = request.execute();

@@ -5,19 +5,16 @@ import java.io.InputStream;
 
 public class HttpServerParserGET extends HttpServerParser{
 
-    public HttpServerParserGET(InputStream input, HttpServerRequest request){
-        super(input, request);
-        this.input = input;
+    public HttpServerParserGET(HttpServerRequest request){
+        super(request);
         this.request = request;
     }
 
     @Override
     public void parse() throws IOException{
         parseRequestLine();
-        String line = readNextLine(input);
-        while (!line.isEmpty()) {
+        for(String line : request.getRequestBody().subList(1, request.getRequestBody().size())){
             parseHeaderLines(line);
-            line = readNextLine(input);
         }
     }
 

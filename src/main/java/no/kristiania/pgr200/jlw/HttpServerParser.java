@@ -7,23 +7,18 @@ import java.net.URLDecoder;
 
 public abstract class HttpServerParser {
 
-    public InputStream input;
     public HttpServerRequest request;
 
-    public HttpServerParser(InputStream input, HttpServerRequest request){
-        this.input = input;
+    public HttpServerParser(HttpServerRequest request){
         this.request = request;
     }
 
     public void parseRequestLine() throws IOException{
             try {
-                String requestLine[] = readNextLine(input).split(" ");
-                for(String line: requestLine){
-                    System.out.println(line);
-                }
+                String requestLine[] = request.getRequestBody().get(0).split(" ");
                 request.setHttpMethod(requestLine[0]);
+                request.setURL(requestLine[1].substring(1));
                 request.setHttpVersion(requestLine[2]);
-                request.setURL(requestLine[1]);
                 parseParameters(parsePath());
             } catch(IndexOutOfBoundsException e){
                 System.out.println("Index out of bounds on parseRequestLine in HttpServerParser.");
@@ -53,18 +48,4 @@ public abstract class HttpServerParser {
     abstract void parse() throws IOException;
 
     abstract void parseHeaderLines(String line) throws IOException;
-
-    public static String readNextLine(InputStream input) throws IOException {
-        StringBuilder nextLine = new StringBuilder();
-        int c;
-        while ((c = input.read()) != -1) {
-            if (c == '\r') {
-                input.mark(1);
-                input.read();
-                break;
-            }
-            nextLine.append((char) c);
-        }
-        return nextLine.toString();
-    }
 }
