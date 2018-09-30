@@ -1,7 +1,9 @@
 package no.kristiania.pgr200.jlw;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,21 +14,27 @@ public class HttpServerRequest {
     private String HttpMethod, HttpVersion, URL, body, path;
     private HashMap<String, String> headers, parameters;
     private List<String> requestBody;
+    private BufferedReader br;
 
     public HttpServerRequest(InputStream input) {
         this.input = input;
         requestBody = new ArrayList<>();
         headers = new HashMap<>();
         parameters = new HashMap<>();
-        populateRequestBody(input);
+        br = new BufferedReader(new InputStreamReader(input));
+        populateRequestBody();
     }
 
-    private void populateRequestBody(InputStream input) {
+    private void populateRequestBody() {
         try {
-            String line = readNextLine(input);
-            while (!line.isEmpty()) {
-                requestBody.add(line);
-                line = readNextLine(input);
+            String line;
+            if(br.ready()){
+                while ((line = br.readLine()) != null) {
+                    System.out.println(line);
+                    requestBody.add(line);
+                }
+            } else {
+                System.out.println("Stream not ready.");
             }
         } catch(IOException ioe){
             System.out.println("Error reading input stream.");
@@ -97,7 +105,7 @@ public class HttpServerRequest {
         parameters.put(param, value);
     }
 
-    private String readNextLine(InputStream input) throws IOException {
+    /*private String readNextLine(InputStream input) throws IOException {
         StringBuilder currentLine = new StringBuilder();
         int c;
         while ((c = input.read()) != -1) {
@@ -112,5 +120,5 @@ public class HttpServerRequest {
             currentLine.append((char)c);
         }
         return currentLine.toString();
-    }
+    }*/
 }
