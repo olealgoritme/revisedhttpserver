@@ -1,7 +1,6 @@
 package no.kristiania.pgr200.jlw;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 public class HttpServerParserGET extends HttpServerParser{
 
@@ -13,7 +12,7 @@ public class HttpServerParserGET extends HttpServerParser{
     @Override
     public void parse() throws IOException{
         parseRequestLine();
-        for(String line : request.getRequestBody().subList(1, request.getRequestBody().size())){
+        for(String line : request.getRawRequest().subList(1, request.getRawRequest().size())){
             parseHeaderLines(line);
         }
     }

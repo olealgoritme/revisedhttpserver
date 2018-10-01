@@ -15,7 +15,7 @@ public class HttpServerParserPOST extends HttpServerParser {
     @Override
     public void parse() throws IOException {
         parseRequestLine();
-        for(String line : request.getRequestBody().subList(1, request.getRequestBody().size())){
+        for(String line : request.getRawRequest().subList(1, request.getRawRequest().size())){
             parseHeaderLines(line);
         }
         request.setBody(body.toString());

@@ -13,36 +13,56 @@ public class HttpServerRequest {
     private InputStream input;
     private String HttpMethod, HttpVersion, URL, body, path;
     private HashMap<String, String> headers, parameters;
-    private List<String> requestBody;
-    private BufferedReader br;
+    private List<String> rawRequest;
+
 
     public HttpServerRequest(InputStream input) {
         this.input = input;
-        requestBody = new ArrayList<>();
+        rawRequest = new ArrayList<>();
         headers = new HashMap<>();
         parameters = new HashMap<>();
-        br = new BufferedReader(new InputStreamReader(input));
-        populateRequestBody();
+        try {
+            populateRequestBody();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void populateRequestBody() {
+    private void populateRequestBody() throws IOException{
         try {
-            String line;
-            if(br.ready()){
-                while ((line = br.readLine()) != null) {
-                    System.out.println(line);
-                    requestBody.add(line);
+            int contentLength = 0;
+            boolean finished = false;
+            boolean blankLine = false;
+            String line = readNextLine(input);
+
+            while(!finished){
+                if(line.contains("Content-Length:")) {
+                    int colonPos = line.indexOf(":");
+                    contentLength = (Integer.parseInt(line.substring(colonPos)));
+                    rawRequest.add(line);
+                    line = readNextLine(input);
+                } else if(line.isEmpty()  && contentLength > 0){
+                    blankLine = true;
+                } else if(blankLine){
+                    byte[] rawBody = new byte[contentLength];
+                    int bytesRead = input.read(rawBody);
+                    StringBuilder s = new StringBuilder();
+                    for (int i = 0; i < rawBody.length; i++) {
+                        s.append(rawBody)
+                    }
+                    finished = true;
+                } else {
+                    rawRequest.add(line);
+                    line = readNextLine(input);
                 }
-            } else {
-                System.out.println("Stream not ready.");
             }
         } catch(IOException ioe){
             System.out.println("Error reading input stream.");
         }
     }
 
-    public List<String> getRequestBody(){
-        return requestBody;
+    public List<String> getRawRequest(){
+        return rawRequest;
     }
 
     public String getHttpMethod() {
@@ -105,7 +125,7 @@ public class HttpServerRequest {
         parameters.put(param, value);
     }
 
-    /*private String readNextLine(InputStream input) throws IOException {
+    private String readNextLine(InputStream input) throws IOException {
         StringBuilder currentLine = new StringBuilder();
         int c;
         while ((c = input.read()) != -1) {
@@ -120,5 +140,5 @@ public class HttpServerRequest {
             currentLine.append((char)c);
         }
         return currentLine.toString();
-    }*/
+    }
 }

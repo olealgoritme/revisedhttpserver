@@ -1,7 +1,6 @@
 package no.kristiania.pgr200.jlw;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
@@ -15,7 +14,7 @@ public abstract class HttpServerParser {
 
     public void parseRequestLine() throws IOException{
             try {
-                String requestLine[] = request.getRequestBody().get(0).split(" ");
+                String requestLine[] = request.getRawRequest().get(0).split(" ");
                 request.setHttpMethod(requestLine[0]);
                 request.setURL(requestLine[1].substring(1));
                 request.setHttpVersion(requestLine[2]);

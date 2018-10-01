@@ -7,9 +7,9 @@ public class HttpServerParserFactory implements HttpServerParserFactoryInterface
 
     public HttpServerParserFactory(HttpServerRequest request){
         this.request = request;
-        int delimiterPos = request.getRequestBody().get(0).indexOf(" ");
+        int delimiterPos = request.getRawRequest().get(0).indexOf(" ");
         try{
-            httpRequestMethodType = request.getRequestBody().get(0).substring(0, delimiterPos);
+            httpRequestMethodType = request.getRawRequest().get(0).substring(0, delimiterPos);
         } catch(IndexOutOfBoundsException e){
             System.out.println("Error retrieving request type.");
         }
