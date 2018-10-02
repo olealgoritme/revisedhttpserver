@@ -19,7 +19,6 @@ public class HttpServerParserPOST extends HttpServerParser {
         parseRequestLine();
         String line = HttpReadLine.readNextLine(input);
         while(!line.isEmpty()) {
-            System.out.println(line);
             parseHeaderLines(line);
             line = HttpReadLine.readNextLine(input);
         }
@@ -30,6 +29,7 @@ public class HttpServerParserPOST extends HttpServerParser {
     public void parseHeaderLines(String line) throws IOException {
         int colonPos = line.indexOf(":");
         request.setHeader(line.substring(0, colonPos), line.substring(colonPos+1));
+        request.setParameter(line.substring(0, colonPos), line.substring(colonPos+1));
     }
 
     public void parseBody(){
