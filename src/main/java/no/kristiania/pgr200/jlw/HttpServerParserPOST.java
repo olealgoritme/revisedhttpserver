@@ -1,37 +1,47 @@
 package no.kristiania.pgr200.jlw;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 public class HttpServerParserPOST extends HttpServerParser {
 
     StringBuilder body;
 
-    public HttpServerParserPOST(HttpServerRequest request){
-        super(request);
+    public HttpServerParserPOST(HttpServerRequest request, InputStream input, String requestLine){
+        super(request, input, requestLine);
         this.request = request;
-        body = new StringBuilder();
+        this.input = input;
+        this.requestLine = requestLine;
     }
 
     @Override
     public void parse() throws IOException {
         parseRequestLine();
-        for(String line : request.getRawRequest().subList(1, request.getRawRequest().size())){
+        String line = HttpReadLine.readNextLine(input);
+        while(!line.isEmpty()) {
+            System.out.println(line);
             parseHeaderLines(line);
+            line = HttpReadLine.readNextLine(input);
         }
-        request.setBody(body.toString());
-        System.out.println("Request body: " + request.getBody());
+        parseBody();
     }
 
     @Override
-    void parseHeaderLines(String line) throws IOException {
+    public void parseHeaderLines(String line) throws IOException {
+        int colonPos = line.indexOf(":");
+        request.setHeader(line.substring(0, colonPos), line.substring(colonPos+1));
+    }
+
+    public void parseBody(){
         StringBuilder body = new StringBuilder();
-        if(line.contains(":")){
-            int colonPos = line.indexOf(":");
-            request.setHeader(line.substring(0, colonPos), line.substring(colonPos+1));
-        } else {
-            if(!line.isEmpty()){
-                body.append(line);
+        for (int i = 0; i < Integer.parseInt(request.getParameter("Content-Length").trim()); i++) {
+            try {
+                int c = input.read();
+                body.append((char) c);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
+        request.setBody(body.toString());
     }
 }

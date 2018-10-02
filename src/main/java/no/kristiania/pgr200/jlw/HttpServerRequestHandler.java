@@ -1,5 +1,7 @@
 package no.kristiania.pgr200.jlw;
 
+import jdk.internal.util.xml.impl.Input;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -26,9 +28,9 @@ public class HttpServerRequestHandler extends Thread {
         //Create object to hold final response
         HttpServerResponse response = new HttpServerResponse();
         //create object to hold the request
-        HttpServerRequest request = new HttpServerRequest(input);
+        HttpServerRequest request = new HttpServerRequest();
         //create factory to create parser
-        HttpServerParserFactory parserFactory = new HttpServerParserFactory(request);
+        HttpServerParserFactory parserFactory = new HttpServerParserFactory(request, input);
         //create parser
         try {
             HttpServerParser parser = parserFactory.createParser(parserFactory.getHttpRequestMethodType());

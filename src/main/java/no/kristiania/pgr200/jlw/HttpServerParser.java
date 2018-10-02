@@ -1,23 +1,28 @@
 package no.kristiania.pgr200.jlw;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 public abstract class HttpServerParser {
 
     public HttpServerRequest request;
+    public InputStream input;
+    public String requestLine;
 
-    public HttpServerParser(HttpServerRequest request){
+    public HttpServerParser(HttpServerRequest request, InputStream input, String requestLine){
         this.request = request;
+        this.input = input;
+        this.requestLine = requestLine;
     }
 
     public void parseRequestLine() throws IOException{
             try {
-                String requestLine[] = request.getRawRequest().get(0).split(" ");
-                request.setHttpMethod(requestLine[0]);
-                request.setURL(requestLine[1].substring(1));
-                request.setHttpVersion(requestLine[2]);
+                String[] s = requestLine.split("[ ]");
+                request.setHttpMethod(s[0]);
+                request.setURL(s[1].substring(1));
+                request.setHttpVersion(s[2]);
                 parseParameters(parsePath());
             } catch(IndexOutOfBoundsException e){
                 System.out.println("Index out of bounds on parseRequestLine in HttpServerParser.");
@@ -42,6 +47,7 @@ public abstract class HttpServerParser {
             for (String param : queryParams) {
                 int delimiterPos = param.indexOf("=");
                 try {
+                    System.out.println("Setting parameter: " + param);
                     request.setParameter(param.substring(0, delimiterPos), URLDecoder.decode(param.substring(delimiterPos + 1), "UTF-8"));
                 } catch (UnsupportedEncodingException e) {
                     System.out.println("Error parsing parameters");
