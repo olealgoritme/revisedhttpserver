@@ -11,6 +11,13 @@ public class HttpServerRequestHandler extends Thread {
     private InputStream input;
     private OutputStream output;
 
+    private HttpServerRequestHandler singleton;
+
+
+    public HttpServerRequestHandler getHandler() {
+        // singleton
+        return this;
+    }
     public HttpServerRequestHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
         try {

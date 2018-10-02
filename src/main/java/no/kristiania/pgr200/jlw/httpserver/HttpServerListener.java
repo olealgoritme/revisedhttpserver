@@ -7,8 +7,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import no.kristiania.pgr200.jlw.entities.Client;
 
 
@@ -17,7 +17,7 @@ public class HttpServerListener extends Thread {
     private int port;
     private int actualPort;
 
-    private static Logger LOGGER = LoggerFactory.getLogger(HttpServerListener.class);
+    //private static Logger LOGGER = LoggerFactory.getLogger(HttpServerListener.class);
 
     private ServerSocket serverSocket;
     private Socket clientSocket;
@@ -43,11 +43,14 @@ public class HttpServerListener extends Thread {
             this.actualPort = serverSocket.getLocalPort();
         } catch (IOException e) {
             // send to handler
+            System.out.println("Error opening Server socket on port " + this.port);
+            System.exit(0);
         } finally {
-            LOGGER.info("Server started!");
-        }
-
-         while (true) {
+      
+        //LOGGER.info("Server started!");
+        System.out.println("Server started. Listening on port " + this.port);
+        
+        while (true) {
             try {
                 clientSocket = serverSocket.accept();
                 // here we pass a client object to the listener
@@ -58,6 +61,8 @@ public class HttpServerListener extends Thread {
             }
         }
 
+        }
+
     }
 
     public int getPort() {
@@ -65,12 +70,12 @@ public class HttpServerListener extends Thread {
     }
 
     public static void main(String[] args) {
-        HttpServerListener server = new HttpServerListener(3000);
+        HttpServerListener server = new HttpServerListener(8000);
         server.setCallback(new HttpServerCallback() {
             
             @Override 
             public void onClientConnected(Client client) {
-                LOGGER.info("Client connected!");
+               // LOGGER.info("Client connected!");
             }
             
         
