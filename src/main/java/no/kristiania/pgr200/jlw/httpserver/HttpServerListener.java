@@ -53,7 +53,10 @@ public class HttpServerListener extends Thread {
         while (true) {
             try {
                 clientSocket = serverSocket.accept();
-                // here we pass a client object to the listener
+                // -- here one could pass a client object to the subscribers (this will be called in the main() method, when client connects)
+                // -- should also pass the client to the request handler singleton thread
+                // -- nothing happens now
+                // TODO: Implement request handler singleton thread
                 callback.onClientConnected(new Client());
             } catch (IOException e) {
                 System.out.println("ZOMG SERVER WENT SPLODE");
@@ -76,6 +79,7 @@ public class HttpServerListener extends Thread {
             @Override 
             public void onClientConnected(Client client) {
                // LOGGER.info("Client connected!");
+               System.out.println("Client connected!");
             }
             
         
