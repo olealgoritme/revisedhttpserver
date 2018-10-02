@@ -13,25 +13,11 @@ public class HttpServerResponseBuilderFactory implements HttpServerResponseBuild
     }
 
     public HttpServerResponseBuilder createBuilder() throws IOException {
-        switch (request.getHttpMethod()){
-            case "GET":
-                switch (request.getPath()) {
-                    case "echo":
-                        return new HttpServerResponseBuilderEcho(request, response);
-                    default:
-                        return new HttpServerResponseBuilderURL();
-                }
-            case "POST":
-                int spacePos = request.getBody().indexOf(" ");
-                String firstWord = request.getBody().substring(0,spacePos);
-                switch (firstWord){
-                    case "echo":
-                        return new HttpServerResponseBuilderEcho(request, response);
-                    default:
-                        return new HttpServerResponseBuilderURL();
-                }
+        switch (request.getPath()){
+            case "echo":
+                return new HttpServerResponseBuilderEcho(request, response);
             default:
-                throw new IllegalArgumentException("Invalid HTTP method");
+                return new HttpServerResponseBuilderURL();
         }
     }
 }

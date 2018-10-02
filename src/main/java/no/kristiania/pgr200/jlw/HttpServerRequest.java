@@ -46,8 +46,8 @@ public class HttpServerRequest {
         this.URL = URL;
     }
 
-    public HashMap<String, String> getHeader() {
-        return headers;
+    public String getHeader(String key) {
+        return headers.get(key);
     }
 
     public void setHeader(String header, String value) {

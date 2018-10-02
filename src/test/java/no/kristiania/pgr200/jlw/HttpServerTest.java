@@ -18,7 +18,6 @@ public class HttpServerTest {
     }
 
     @Test
-    @Ignore
     public void shouldWriteStatusCode() throws IOException {
         HttpClientGETRequest request = new HttpClientGETRequest("localhost", server.getPort(), "/echo?status=200");
         HttpClientResponse response = request.execute();
@@ -27,7 +26,6 @@ public class HttpServerTest {
     }
 
     @Test
-    @Ignore
     public void shouldReadOtherStatusCodes() throws IOException {
         HttpClientGETRequest request = new HttpClientGETRequest("localhost", server.getPort(), "/echo?status=404");
         HttpClientResponse response = request.execute();
@@ -35,7 +33,6 @@ public class HttpServerTest {
     }
 
     @Test
-    @Ignore
     public void shouldReadResponseHeaders() throws IOException {
         HttpClientGETRequest request = new HttpClientGETRequest("localhost", server.getPort(),
                 "/echo?status=307&Location=http%3A%2F%2Fwww.kristiania.no");
@@ -46,8 +43,7 @@ public class HttpServerTest {
     }
 
     @Test
-    @Ignore
-    public void shouldReadResponseBody() throws IOException {
+     public void shouldReadResponseBody() throws IOException {
         HttpClientGETRequest request = new HttpClientGETRequest("localhost", server.getPort(),
                 "/echo?body=Hello+world!");
         HttpClientResponse response = request.execute();
@@ -57,7 +53,6 @@ public class HttpServerTest {
     }
 
     @Test
-    @Ignore
     public void shouldEchoResponseBody() throws IOException {
         HttpClientGETRequest request = new HttpClientGETRequest("localhost", server.getPort(),
                 "/echo?body=Hello+Kristiania!");
@@ -68,7 +63,6 @@ public class HttpServerTest {
     }
 
     @Test
-    @Ignore
     public void shouldHandleEmptyParam() throws IOException {
         HttpClientGETRequest request = new HttpClientGETRequest("localhost", server.getPort(),
                 "/echo?");
@@ -79,7 +73,6 @@ public class HttpServerTest {
     }
 
     @Test
-    @Ignore
     public void shouldHandleNoParams() throws IOException {
         HttpClientGETRequest request = new HttpClientGETRequest("localhost", server.getPort(),
                 "/echo");
@@ -91,8 +84,8 @@ public class HttpServerTest {
 
     @Test
     public void shouldWriteStatusCodePOST() throws IOException {
-        HttpClientPOSTRequest request = new HttpClientPOSTRequest("localhost", server.getPort(), "/",
-                "/echo?status=200");
+        HttpClientPOSTRequest request = new HttpClientPOSTRequest("localhost", server.getPort(), "/echo",
+                "status=200&body=hello+idiot");
         HttpClientResponse response = request.execute();
         assertThat(response.getStatusCode()).isEqualTo(200);
     }
