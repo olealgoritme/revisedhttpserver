@@ -1,4 +1,4 @@
-package no.kristiania.pgr200.jlw;
+package no.kristiania.pgr200.jlw.httpserver;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,7 +25,7 @@ public class HttpServerListener {
         while (true) {
             try {
                 Socket clientSocket = serverSocket.accept();
-                Thread t = new HttpServerRequestHandler(clientSocket);
+                Thread t = new HttpServerReqestListener(clientSocket);
                 t.start();
             } catch (IOException e) {
                 System.out.println("ZOMG SERVER WENT SPLODE");

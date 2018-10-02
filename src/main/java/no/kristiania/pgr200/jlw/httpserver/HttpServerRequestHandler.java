@@ -1,6 +1,4 @@
-package no.kristiania.pgr200.jlw;
-
-import jdk.internal.util.xml.impl.Input;
+package no.kristiania.pgr200.jlw.httpserver;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,4 +1,4 @@
-package no.kristiania.pgr200.jlw;
+package no.kristiania.pgr200.jlw.httpserver;
 
 public abstract class HttpServerResponseBuilder {
     protected HttpServerRequest request;
