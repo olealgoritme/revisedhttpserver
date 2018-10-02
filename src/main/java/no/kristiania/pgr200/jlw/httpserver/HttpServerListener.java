@@ -6,32 +6,58 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class HttpServerListener {
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import no.kristiania.pgr200.jlw.entities.Client;
+
+
+public class HttpServerListener extends Thread {
 
     private int port;
     private int actualPort;
+
+    private static Logger LOGGER = LoggerFactory.getLogger(HttpServerListener.class);
+
+    private ServerSocket serverSocket;
+    private Socket clientSocket;
+    private HttpServerCallback callback;
 
     public HttpServerListener(int port) {
         this.port = port;
     }
 
-    public void start() throws IOException {
-        ServerSocket serverSocket = new ServerSocket(0);
-        this.actualPort = serverSocket.getLocalPort();
-        new Thread(() ->  serverThread(serverSocket)).start();
+    private void setCallback(HttpServerCallback callback) {
+        this.callback = callback;
     }
 
-    public void serverThread(ServerSocket serverSocket) {
-        while (true) {
+    private void setExceptionHandler() {
+        // empty still
+    }
+
+    @Override
+    public void run() {
+
+        try {
+             serverSocket = new ServerSocket(this.port);
+            this.actualPort = serverSocket.getLocalPort();
+        } catch (IOException e) {
+            // send to handler
+        } finally {
+            LOGGER.info("Server started!");
+        }
+
+         while (true) {
             try {
-                Socket clientSocket = serverSocket.accept();
-                Thread t = new HttpServerReqestListener(clientSocket);
-                t.start();
+                clientSocket = serverSocket.accept();
+                // here we pass a client object to the listener
+                callback.onClientConnected(new Client());
             } catch (IOException e) {
                 System.out.println("ZOMG SERVER WENT SPLODE");
                 e.printStackTrace();
             }
         }
+
     }
 
     public int getPort() {
@@ -39,12 +65,17 @@ public class HttpServerListener {
     }
 
     public static void main(String[] args) {
-        HttpServerListener server = new HttpServerListener(0);
-        try {
-            server.start();
-        } catch (IOException e) {
-            System.out.println("Error starting server.");
-            e.printStackTrace();
-        }
+        HttpServerListener server = new HttpServerListener(3000);
+        server.setCallback(new HttpServerCallback() {
+            
+            @Override 
+            public void onClientConnected(Client client) {
+                LOGGER.info("Client connected!");
+            }
+            
+        
+        });
+        server.start();
+
     }
 }
