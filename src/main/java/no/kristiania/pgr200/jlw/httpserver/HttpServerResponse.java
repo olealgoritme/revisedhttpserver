@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HttpServerResponse {
+public final class HttpServerResponse {
 
     private String statusLine;
     private List<String> headers;
@@ -37,4 +37,5 @@ public class HttpServerResponse {
     public void setBody(String body) {
         this.body = body;
     }
+
 }

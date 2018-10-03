@@ -14,7 +14,7 @@ public class HttpServerRequestHandler extends Thread {
     private HttpServerRequestHandler singleton;
 
 
-    public HttpServerRequestHandler getHandler() {
+    public HttpServerRequestHandler getInstance() {
         // singleton
         return this;
     }
@@ -34,8 +34,15 @@ public class HttpServerRequestHandler extends Thread {
         HttpServerResponse response = new HttpServerResponse();
         //create object to hold the request
         HttpServerRequest request = new HttpServerRequest();
-        //create parser
+        
+
+        // create better parser
+        // TODO: your request parser is shit. crashes.
+        // TODO: send to exception handler
         HttpServerParser parser = new HttpServerParser(request, input);
+        
+
+
         //instantiate the builder factory
         HttpServerResponseBuilderFactory builderFactory = new HttpServerResponseBuilderFactory(request, response);
         //create the builder, which populates the response object

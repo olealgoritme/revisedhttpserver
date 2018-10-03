@@ -37,11 +37,6 @@ public class HttpServerResponseBuilderEcho extends HttpServerResponseBuilder{
 
     @Override
     public void setBody() {
-        String body = request.getParameter("body");
-        if(body != null){
-            response.setBody(body);
-        } else{
-            response.setBody("");
-        }
+        response.setBody("pong");
     }
 }

@@ -12,6 +12,7 @@
 /home/xuw/code/other/revisedhttpserver/src/main/java/no/kristiania/pgr200/jlw/httpserver/HttpServerResponseBuilder.java
 /home/xuw/code/other/revisedhttpserver/src/main/java/no/kristiania/pgr200/jlw/httpserver/HttpServerRequestHandler.java
 /home/xuw/code/other/revisedhttpserver/src/main/java/no/kristiania/pgr200/jlw/httpserver/HttpServerEchoResponseBuilder.java
+/home/xuw/code/other/revisedhttpserver/src/main/java/no/kristiania/pgr200/jlw/httpserver/ResponseBuilder.java
 /home/xuw/code/other/revisedhttpserver/src/main/java/no/kristiania/pgr200/jlw/httpserver/HttpServerRequest.java
 /home/xuw/code/other/revisedhttpserver/src/main/java/no/kristiania/pgr200/jlw/httpserver/HttpServerParser.java
 /home/xuw/code/other/revisedhttpserver/src/main/java/no/kristiania/pgr200/jlw/httpserver/HttpServerURLResponseBuilder.java

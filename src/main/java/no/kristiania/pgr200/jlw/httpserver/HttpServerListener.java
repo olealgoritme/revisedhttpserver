@@ -21,18 +21,19 @@ public class HttpServerListener extends Thread {
 
     private ServerSocket serverSocket;
     private Socket clientSocket;
-    private HttpServerCallback callback;
+    private HttpServerCallback listener;
 
     public HttpServerListener(int port) {
         this.port = port;
     }
 
-    private void setCallback(HttpServerCallback callback) {
-        this.callback = callback;
+    private void setCallback(HttpServerCallback listener) {
+        this.listener = listener;
     }
 
     private void setExceptionHandler() {
         // empty still
+        // TODO: create global/internal exception handler with singleton class (getInstance() returns singleton)
     }
 
     @Override
@@ -47,17 +48,23 @@ public class HttpServerListener extends Thread {
             System.exit(0);
         } finally {
       
+        // correct place to listen for client connections, after we have exhausted
+        // all possible errors.
+
         //LOGGER.info("Server started!");
         System.out.println("Server started. Listening on port " + this.port);
         
         while (true) {
             try {
                 clientSocket = serverSocket.accept();
-                // -- here one could pass a client object to the subscribers (this will be called in the main() method, when client connects)
+                HttpServerRequestHandler requestHandler = new HttpServerRequestHandler(clientSocket);
+                requestHandler.start();
+                // -- here one could pass a client object to the subscribers (listener var) (this will be called in the main() method, when client connects)
                 // -- should also pass the client to the request handler singleton thread
                 // -- nothing happens now
                 // TODO: Implement request handler singleton thread
-                callback.onClientConnected(new Client());
+                // -- do not instantiate threads per connect, stupid idea.
+                listener.onClientConnected(new Client());
             } catch (IOException e) {
                 System.out.println("ZOMG SERVER WENT SPLODE");
                 e.printStackTrace();
@@ -73,17 +80,24 @@ public class HttpServerListener extends Thread {
     }
 
     public static void main(String[] args) {
+
+
+
+        // TODO: revise where to handle requests (in callback or in loop)
+
         HttpServerListener server = new HttpServerListener(8000);
+        
         server.setCallback(new HttpServerCallback() {
             
             @Override 
             public void onClientConnected(Client client) {
-               // LOGGER.info("Client connected!");
-               System.out.println("Client connected!");
+
+              System.out.println("Client connected!");
             }
             
-        
         });
+        
+
         server.start();
 
     }
